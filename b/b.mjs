@@ -1,0 +1,5 @@
+console.log('b/b.mjs')
+console.log('import.meta.url', import.meta.url)
+console.log('isShim', require.isShim)
+console.log('isShim', require.isShim)
+require('../c.cjs')
