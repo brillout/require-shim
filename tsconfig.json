@@ -10,5 +10,6 @@
     "outDir": "./dist",
     "lib": ["ES2021", "DOM", "DOM.Iterable"]
   },
-  "files": ["./index.cts"]
+  "include": ["src/**/*"],
+  "rootDir": "./src/"
 }
