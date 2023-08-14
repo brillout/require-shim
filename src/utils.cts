@@ -1,3 +1,5 @@
+// Exact copy of https://github.com/brillout/vite-plugin-ssr/tree/2b59694ac4c3449d1ed857510cf70b0cc05f7ddf/vite-plugin-ssr/utils
+
 export function toPosixPath(path: string): string {
   const pathPosix = path.split('\\').join('/')
   assertPosixPath(pathPosix)
@@ -20,6 +22,7 @@ export function assert(condition: unknown, debugInfo?: string): asserts conditio
     '[@brillout/require-shim]',
     'You stumbled upon a bug.',
     `Go to ${githubRepository}/issues/new and copy-paste this error.`,
+    'A maintainer will fix the bug.',
     debugInfo
   ]
     .filter(Boolean)

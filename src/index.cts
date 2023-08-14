@@ -11,7 +11,7 @@ assertIsNotBrowser()
 //  - esbuild doesn't always transpile require() to import(), https://github.com/evanw/esbuild/issues/566#issuecomment-735551834
 //  - Vite's esbuild workaround plugin doesn't transform require() into ESM import for Node.js, https://github.com/vitejs/vite/blob/a595b115efbd38ac31c2de62ce5dd0faca424d02/packages/vite/src/node/optimizer/esbuildDepPlugin.ts#L290
 //  - Test: [/test/require-shim/](https://github.com/brillout/vite-plugin-ssr/tree/88a05ef4888d0df28a370d0ca0460bf8036aadf0/test/require-shim)
-//  - Playground: https://github.com/brillout/require-shim
+//  - Playground: https://github.com/brillout/require-shim/tree/playground
 function installRequireShim() {
   if (globalObject.alreadyCalled) return
   globalObject.alreadyCalled = true
@@ -20,7 +20,7 @@ function installRequireShim() {
   try {
     requireLocal = require
   } catch {}
-  // If node_modules/vite-plugin-ssr/ is bundled into user code, then this file can be ESM. We have to abort because there doesn't seem to be a way to add the shim in a syncrhonous way. Adding it asynchronously leads to race conditions which is worse than not adding the shim at all.
+  // If node_modules/@brillout/require-shim/ is bundled into user code, then this file can be ESM. We have to abort because there doesn't seem to be a way to add the shim in a syncrhonous way. Adding it asynchronously leads to race conditions which is worse than not adding the shim at all.
   //   - There doesn't seem to be require() syncrhonous alternerative for ESM: https://stackoverflow.com/questions/51069002/convert-import-to-synchronous
   if (!requireLocal) return
 
@@ -33,7 +33,7 @@ function installRequireShim() {
     return
   }
 
-  // We cannot use `typeof require === 'undefined'` since it's always true as this file is CJS (it lives in node_modules/vite-plugin-ssr/dist/cjs/)
+  // We cannot use `typeof require === 'undefined'` since it's always true as this file is CJS (it's node_modules/@brillout/require-shim/dist/index.cjs)
   if (globalThis.require === undefined) {
     install()
   }
@@ -65,7 +65,7 @@ function installRequireShim() {
 
         const requireUserLand = module.createRequire(requireContextFile)
         // @ts-expect-error
-        requireUserLand._isShimInstalledByVike = true
+        requireUserLand._is_brillout_require_shim = true
         return requireUserLand
       }
     })
@@ -137,7 +137,7 @@ function testShim() {
   // Seems like Vitest does some unusual thing
   if (isVitest()) return
   assert(require !== globalThis.require)
-  assert(!('_isShimInstalledByVike' in require))
+  assert(!('_is_brillout_require_shim' in require))
   import('./runtime-test.cjs')
 }
 
